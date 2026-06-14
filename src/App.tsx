@@ -152,6 +152,14 @@ export default function App() {
                   <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button
+                  onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = '/assets/Resume.pdf';
+                    link.download = 'Parthasarathy_K_Resume.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
                   className="group px-8 py-4 rounded-sm font-sans font-bold text-xs tracking-widest text-[var(--color-text-primary)] border border-[var(--color-border)] hover:border-[var(--accent-gold)] transition-all duration-300 flex items-center gap-3 cursor-pointer"
                 >
                   <span>DOWNLOAD CV</span>
