@@ -85,98 +85,123 @@ export default function App() {
         
         {/* HERO SECTION */}
         <section id="hero" className="min-h-[70vh] flex flex-col justify-center relative py-12 scroll-mt-32">
-          <div className="space-y-10 max-w-3xl">
-            {/* Status Pill */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-teal)] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent-teal)]"></span>
-              </span>
-              <span className="font-sans text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-[0.15em]">
-                {personalInfo.availability}
-              </span>
-            </motion.div>
-
-            {/* Name and Title */}
-            <div className="space-y-4">
-              <motion.h1 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="font-display font-light text-hero leading-[0.9] tracking-tighter"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left Column - Text Content */}
+            <div className="space-y-10">
+              {/* Status Pill */}
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm"
               >
-                {personalInfo.name.split(' ')[0]}
-              </motion.h1>
-              <motion.div
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-teal)] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent-teal)]"></span>
+                </span>
+                <span className="font-sans text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-[0.15em]">
+                  {personalInfo.availability}
+                </span>
+              </motion.div>
+
+              {/* Name and Title */}
+              <div className="space-y-4">
+                <motion.h1 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="font-display font-light text-hero leading-[0.9] tracking-tighter"
+                >
+                  {personalInfo.name.split(' ')[0]}
+                </motion.h1>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                  className="flex items-center gap-4"
+                >
+                  <div className="h-px w-12 bg-[var(--accent-violet)]" />
+                  <span className="font-sans font-medium text-[var(--color-text-secondary)] text-lg tracking-wide italic">
+                    {personalInfo.title}
+                  </span>
+                </motion.div>
+              </div>
+
+              {/* Tagline */}
+              <motion.p 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                className="flex items-center gap-4"
+                transition={{ delay: 0.6, duration: 0.8 }}
+                className="font-display font-light text-3xl md:text-4xl text-[var(--color-text-secondary)] leading-tight italic"
               >
-                <div className="h-px w-12 bg-[var(--accent-violet)]" />
-                <span className="font-sans font-medium text-[var(--color-text-secondary)] text-lg tracking-wide italic">
-                  {personalInfo.title}
-                </span>
+                Building systems that <span className="text-[var(--color-text-primary)] font-normal not-italic">think clearly.</span>
+              </motion.p>
+
+              {/* CTAs */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+                className="flex flex-wrap items-center gap-6 pt-4"
+              >
+                <button
+                  onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="group px-8 py-4 rounded-sm font-sans font-bold text-xs tracking-widest text-black bg-[var(--accent-gold)] hover:bg-white transition-all duration-300 flex items-center gap-3 cursor-pointer"
+                >
+                  <span>VIEW WORK</span>
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button
+                  className="group px-8 py-4 rounded-sm font-sans font-bold text-xs tracking-widest text-[var(--color-text-primary)] border border-[var(--color-border)] hover:border-[var(--accent-gold)] transition-all duration-300 flex items-center gap-3 cursor-pointer"
+                >
+                  <span>DOWNLOAD CV</span>
+                  <Download size={14} className="group-hover:translate-y-0.5 transition-transform" />
+                </button>
+              </motion.div>
+
+              {/* Architectural Stats Row */}
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 1 }}
+                className="pt-12 space-y-6"
+              >
+                <div className="h-px w-full bg-[var(--gradient-rule)]" />
+                <div className="flex flex-wrap gap-12 font-sans text-[10px] font-bold tracking-[0.2em] text-[var(--color-text-muted)] uppercase">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">3</span>
+                    <span>Projects</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">2</span>
+                    <span>Years Exp.</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">7</span>
+                    <span>Tech Stacks</span>
+                  </div>
+                </div>
               </motion.div>
             </div>
 
-            {/* Tagline */}
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="font-display font-light text-3xl md:text-4xl text-[var(--color-text-secondary)] leading-tight italic"
+            {/* Right Column - Profile Image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, x: 20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative flex items-center justify-center hidden lg:flex"
             >
-              Building systems that <span className="text-[var(--color-text-primary)] font-normal not-italic">think clearly.</span>
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="flex flex-wrap items-center gap-6 pt-4"
-            >
-              <button
-                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="group px-8 py-4 rounded-sm font-sans font-bold text-xs tracking-widest text-black bg-[var(--accent-gold)] hover:bg-white transition-all duration-300 flex items-center gap-3 cursor-pointer"
-              >
-                <span>VIEW WORK</span>
-                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button
-                className="group px-8 py-4 rounded-sm font-sans font-bold text-xs tracking-widest text-[var(--color-text-primary)] border border-[var(--color-border)] hover:border-[var(--accent-gold)] transition-all duration-300 flex items-center gap-3 cursor-pointer"
-              >
-                <span>DOWNLOAD CV</span>
-                <Download size={14} className="group-hover:translate-y-0.5 transition-transform" />
-              </button>
-            </motion.div>
-
-            {/* Architectural Stats Row */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 1 }}
-              className="pt-12 space-y-6"
-            >
-              <div className="h-px w-full bg-[var(--gradient-rule)]" />
-              <div className="flex flex-wrap gap-12 font-sans text-[10px] font-bold tracking-[0.2em] text-[var(--color-text-muted)] uppercase">
-                <div className="flex flex-col gap-1">
-                  <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">12</span>
-                  <span>Projects</span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">4</span>
-                  <span>Years Exp.</span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">8</span>
-                  <span>Tech Stacks</span>
+              {/* Image container with gradient fade */}
+              <div className="relative w-64 rounded-lg overflow-hidden group hover:scale-105 transition-transform duration-500">
+                <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-[#0f0f15] via-[#080910] to-[#080910]">
+                  <img
+                    src="/assets/profile.jpeg"
+                    alt={personalInfo.name}
+                    className="w-full h-full object-cover mix-blend-screen"
+                  />
+                  {/* Strong gradient fade overlay for blending */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#080910]/30 via-transparent to-[#080910]/60 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#080910]/40 via-transparent to-[#080910]/40 pointer-events-none" />
                 </div>
               </div>
             </motion.div>
