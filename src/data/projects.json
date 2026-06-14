@@ -1,0 +1,41 @@
+[
+  {
+    "id": "portfolio",
+    "title": "Portfolio",
+    "year": "2026",
+    "status": "Live",
+    "category": "Frontend Development",
+    "description": "Designed and built a personal portfolio website to highlight skills, completed courses, and projects. Showcases skills in web development, UI/UX design, and content organisation. Serves as a professional platform for recruiters and collaborators to learn about work and achievements.",
+    "technologies": ["HTML/CSS", "JavaScript"],
+    "stats": [
+      { "label": "Focus", "value": "Portfolio" },
+      { "label": "Tech", "value": "HTML/CSS + JS" }
+    ]
+  },
+  {
+    "id": "student-dashboard",
+    "title": "Student Dashboard",
+    "year": "2026",
+    "status": "Live",
+    "category": "Frontend Development",
+    "description": "Provides an easy way to manage student records. Allows users to add, view, and delete student details efficiently. Designed to improve organization and simplify basic record operations.",
+    "technologies": ["HTML/CSS", "JavaScript"],
+    "stats": [
+      { "label": "Focus", "value": "Record Management" },
+      { "label": "Tech", "value": "HTML/CSS + JS" }
+    ]
+  },
+  {
+    "id": "banking-prototype",
+    "title": "Banking Application Prototype",
+    "year": "2026",
+    "status": "Live",
+    "category": "UI/UX Design & Prototype",
+    "description": "Developed a banking app prototype with user-friendly navigation and responsive design. Created wireframes and interactive prototypes to visualize account management and transaction flows. Focused on clean visual design principles to enhance the overall user experience.",
+    "technologies": ["Wireframing", "Figma"],
+    "stats": [
+      { "label": "Focus", "value": "Prototype" },
+      { "label": "Tech", "value": "Wireframing + Figma" }
+    ]
+  }
+]

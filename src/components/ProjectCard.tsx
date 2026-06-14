@@ -1,137 +1,82 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ExternalLink, Github, Sparkles, Code2, Layers, Check, Info } from 'lucide-react';
+import { ExternalLink, Github, ArrowRight } from 'lucide-react';
 import { Project } from '../types';
-import { ThemeConfig } from './ThemeSelector';
 
 interface ProjectCardProps {
   project: Project;
-  theme: ThemeConfig;
 }
 
-export default function ProjectCard({ project, theme }: ProjectCardProps) {
-  const [isInspecting, setIsInspecting] = useState(false);
-
+export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <div className="relative group rounded-3xl overflow-hidden glass-panel-glow border border-white/5 transition-all duration-300 hover:border-slate-800 flex flex-col h-full shadow-2xl">
-      {/* Decorative top corner gradient splash */}
-      <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${project.gradientFrom} ${project.gradientTo} opacity-10 group-hover:opacity-20 blur-xl transition-opacity duration-500`} />
-      
-      {/* Left thin color badge strip */}
-      <div className={`absolute left-0 inset-y-0 w-1 bg-gradient-to-b ${project.gradientFrom} ${project.gradientTo}`} />
-
-      <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 relative z-10">
+    <div className="relative group rounded-2xl overflow-hidden glass-panel flex flex-col h-full hover:bg-[var(--gradient-card-hover)]">
+      <div className="p-8 sm:p-10 flex flex-col justify-between flex-1 relative z-10">
         <div>
-          {/* Header - category and active stats */}
-          <div className="flex items-center justify-between gap-2 mb-3.5">
-            <span className={`text-[10px] uppercase font-mono tracking-widest font-semibold text-slate-400 bg-slate-900 border border-slate-800/80 px-2.5 py-1 rounded-full`}>
-              {project.category}
+          {/* Header - Year and Status */}
+          <div className="flex items-center justify-between gap-2 mb-8">
+            <span className="font-mono text-xs font-semibold text-[var(--accent-violet)] tracking-widest uppercase">
+              {project.year}
             </span>
-            <div className="flex gap-1.5">
-              {project.stats && project.stats.map((stat, idx) => (
-                <div key={idx} className="flex flex-col items-end">
-                  <span className="text-[9px] text-slate-500 font-mono tracking-wider font-semibold uppercase">{stat.label}</span>
-                  <span className={`text-xs font-mono font-bold text-white`}>{stat.value}</span>
-                </div>
-              ))}
+            <div className={`flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)]`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${
+                project.status === 'Live' ? 'bg-[var(--accent-teal)] shadow-[0_0_8px_var(--accent-teal)]' : 
+                project.status === 'In Progress' ? 'bg-[var(--accent-gold)]' : 'bg-[var(--color-text-muted)]'
+              }`} />
+              <span className="font-sans text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-wider">
+                {project.status}
+              </span>
             </div>
           </div>
 
           {/* Project Title */}
-          <h4 className="text-xl font-display font-medium text-white mb-2.5 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-300 transition-colors">
+          <h4 className="font-display font-semibold text-2xl text-[var(--color-text-primary)] mb-4 leading-tight">
             {project.title}
           </h4>
 
-          {/* Tech Stack Pills */}
-          <div className="flex flex-wrap gap-1.5 mb-5">
+          {/* Project Description */}
+          <p className="font-sans text-sm text-[var(--color-text-secondary)] leading-relaxed text-left mb-10">
+            {project.description}
+          </p>
+
+          {/* Tech Stack Tags */}
+          <div className="flex flex-wrap gap-2 mb-10">
             {project.technologies.map((tech, idx) => (
               <span
                 key={idx}
-                className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950/80 border border-slate-900 text-slate-400 hover:text-white transition-colors duration-200"
+                className="font-sans text-[10px] font-medium px-3 py-1 rounded-full border border-[var(--color-border)] bg-[var(--color-base)] text-[var(--color-text-muted)] group-hover:text-[var(--color-text-secondary)] transition-colors duration-300"
               >
                 {tech}
               </span>
             ))}
           </div>
-
-          {/* Project Main description / Inspect Panel */}
-          <div className="relative min-h-[96px] mb-6">
-            <AnimatePresence mode="wait">
-              {!isInspecting ? (
-                <motion.p
-                  key="short-desc"
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  className="text-sm text-slate-400 font-sans leading-relaxed text-left"
-                >
-                  {project.description}
-                </motion.p>
-              ) : (
-                <motion.div
-                  key="full-inspect"
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  className="p-3 bg-slate-950 rounded-2xl border border-slate-900 text-xs font-mono text-slate-300 space-y-1.5 text-left h-full"
-                >
-                  <div className="flex items-center gap-1.5 text-amber-400 border-b border-slate-900 pb-1 mb-1.5">
-                    <Code2 size={12} />
-                    <span>Architectural Node Specs</span>
-                  </div>
-                  <p className="leading-relaxed">
-                    <strong className="text-white">Execution Domain:</strong> client-side application context with lightweight localized hooks.
-                  </p>
-                  <p className="leading-relaxed">
-                    <strong className="text-white">Design Fidelity:</strong> absolute clean spacing, balanced grids, responsive constraints, user layouts.
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
         </div>
 
         {/* Footer actions */}
-        <div className="flex justify-between items-center pt-4 border-t border-slate-900/60 mt-auto">
-          {/* Inspect code button */}
-          <button
-            onClick={() => setIsInspecting((prev) => !prev)}
-            className={`flex items-center gap-1.5 text-xs font-mono cursor-pointer transition-colors duration-200 ${
-              isInspecting ? 'text-amber-400 hover:text-amber-300' : 'text-slate-500 hover:text-white'
-            }`}
-          >
-            <Info size={12} />
-            <span>{isInspecting ? 'CLOSE SPECS' : 'INSPECT ARCHITECTURE'}</span>
-          </button>
-
-          {/* Redirect links */}
-          <div className="flex items-center gap-3">
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="p-2 rounded-xl bg-slate-950 border border-slate-900 text-slate-400 hover:text-white hover:border-slate-800 transition-all duration-200"
-                title="View Source on GitHub"
-              >
-                <Github size={14} />
-              </a>
-            )}
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target={project.liveUrl === '#' ? '_self' : '_blank'}
-                rel="noreferrer"
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-mono font-semibold bg-slate-900 border border-slate-800 text-slate-200 hover:text-white hover:bg-slate-800/80 transition-all duration-200"
-              >
-                <Layers size={11} className={`${project.liveUrl !== '#' ? 'animate-pulse' : ''}`} />
-                <span>{project.liveUrl === '#' ? 'OFFLINE DEMO' : 'LIVE DEMO'}</span>
-                <ExternalLink size={10} />
-              </a>
-            )}
-          </div>
+        <div className="flex items-center gap-6 pt-8 border-t border-[var(--color-border)] mt-auto">
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 text-xs font-bold text-[var(--color-text-muted)] hover:text-[var(--accent-gold)] transition-colors duration-300 group/link"
+              title="View Source on GitHub"
+            >
+              <span>GITHUB</span>
+              <ArrowRight size={12} className="-rotate-45 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+            </a>
+          )}
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target={project.liveUrl === '#' ? '_self' : '_blank'}
+              rel="noreferrer"
+              className="flex items-center gap-2 text-xs font-bold text-[var(--accent-gold)] hover:text-[var(--color-text-primary)] transition-colors duration-300 group/link"
+            >
+              <span>LIVE DEMO</span>
+              <ArrowRight size={12} className="-rotate-45 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+            </a>
+          )}
         </div>
-
       </div>
     </div>
   );

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "prompt-engineering",
+    "title": "Prompt Engineering Mastery",
+    "issuer": "Sunstone School of Technology",
+    "date": "May 2026",
+    "skills": ["Prompt Engineering", "AI Tools", "Productivity"],
+    "gradientClass": "from-fuchsia-500 to-purple-600",
+    "iconName": "Figma"
+  },
+  {
+    "id": "ui-ux",
+    "title": "UI/UX Professional Certification",
+    "issuer": "Sunstone School of Technology",
+    "date": "April 2026",
+    "skills": ["User Interface", "User Experience", "Prototyping", "Figma"],
+    "gradientClass": "from-fuchsia-500 to-purple-600",
+    "iconName": "Figma"
+  },
+  {
+    "id": "sql-pro",
+    "title": "SQL Pro: AI-Powered Querying",
+    "issuer": "Sunstone School of Technology",
+    "date": "April 2026",
+    "skills": ["SQL", "AI Querying", "Database Management", "Optimization"],
+    "gradientClass": "from-blue-500 to-cyan-600",
+    "iconName": "Database"
+  },
+  {
+    "id": "full-stack-novitech",
+    "title": "Full Stack Development",
+    "issuer": "NoviTech Private Limited",
+    "date": "Dec 2025 - Jan 2026",
+    "skills": ["HTML/CSS", "JavaScript", "Adobe Illustrator", "Figma", "Adobe XD"],
+    "gradientClass": "from-rose-500 to-orange-500",
+    "iconName": "Code2"
+  },
+  {
+    "id": "adv-js",
+    "title": "Advanced JavaScript",
+    "issuer": "Sunstone School of Technology",
+    "date": "June 2025",
+    "skills": ["Advanced JavaScript", "ES6+", "DOM Manipulation"],
+    "gradientClass": "from-yellow-400 to-amber-500",
+    "iconName": "Zap"
+  }
+]

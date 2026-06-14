@@ -1,0 +1,28 @@
+[
+  {
+    "id": "college",
+    "institution": "Hindustan College Of Arts & Science",
+    "degree": "BCA",
+    "duration": "2023 - 2026",
+    "badge": "Undergraduate",
+    "gradientClass": "from-violet-500 to-indigo-600"
+  },
+  {
+    "id": "hsc",
+    "institution": "Blessings Matriculation Higher Secondary School",
+    "degree": "Class XII (2023)",
+    "duration": "2023",
+    "score": "Percentage: 73%",
+    "badge": "Higher Secondary",
+    "gradientClass": "from-cyan-500 to-blue-600"
+  },
+  {
+    "id": "sslc",
+    "institution": "Blessings Matriculation Higher Secondary School",
+    "degree": "Class X (2021)",
+    "duration": "2021",
+    "score": "Percentage: 70%",
+    "badge": "Secondary School",
+    "gradientClass": "from-amber-400 to-orange-500"
+  }
+]

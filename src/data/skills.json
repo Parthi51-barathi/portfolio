@@ -1,0 +1,31 @@
+[
+  {
+    "title": "Hard Skills",
+    "iconName": "Layout",
+    "gradientClass": "from-pink-500 via-rose-500 to-red-500",
+    "skills": [
+      { "name": "HTML/CSS", "level": 95, "iconName": "Html5" },
+      { "name": "Python", "level": 80, "iconName": "Code" },
+      { "name": "Java", "level": 80, "iconName": "Code2" }
+    ]
+  },
+  {
+    "title": "Design Skills",
+    "iconName": "Figma",
+    "gradientClass": "from-violet-600 via-purple-600 to-pink-600",
+    "skills": [
+      { "name": "Figma", "level": 90, "iconName": "Figma" },
+      { "name": "Wireframing", "level": 88, "iconName": "Ruler" }
+    ]
+  },
+  {
+    "title": "Soft Skills & DSA",
+    "iconName": "Sparkles",
+    "gradientClass": "from-amber-400 via-orange-500 to-rose-500",
+    "skills": [
+      { "name": "Time Management", "level": 90, "iconName": "Clock" },
+      { "name": "Decision-Making", "level": 85, "iconName": "Target" },
+      { "name": "DSA in C++ and Java", "level": 80, "iconName": "Tree" }
+    ]
+  }
+]

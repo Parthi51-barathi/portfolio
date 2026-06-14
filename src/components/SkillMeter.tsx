@@ -1,52 +1,74 @@
-import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, Trophy, Lightbulb } from 'lucide-react';
 import { SkillCategory } from '../types';
-import { ThemeConfig } from './ThemeSelector';
 
 interface SkillMeterProps {
-  key?: any;
   category: SkillCategory;
-  theme: ThemeConfig;
 }
 
-export default function SkillMeter({ category, theme }: SkillMeterProps) {
+export default function SkillMeter({ category }: SkillMeterProps) {
   return (
-    <div className="glass-panel p-6 sm:p-7 rounded-3xl border border-white/5 relative overflow-hidden h-full flex flex-col justify-between shadow-lg hover:shadow-2xl hover:border-slate-800 transition-all duration-300">
-      {/* Visual background blurred blob for identity */}
-      <div className={`absolute -top-10 -right-10 w-24 h-24 bg-gradient-to-br ${category.gradientClass} opacity-5 blur-xl pointer-events-none`} />
-
-      <div>
-        {/* Category Header */}
-        <div className="flex items-center justify-between gap-2 mb-6 pb-4 border-b border-slate-900/40">
-          <h4 className="text-base font-display font-semibold text-white tracking-wide animate-pulse-glow">
+    <div className="glass-panel overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)]/50 h-full flex flex-col">
+      {/* Container Header - Technical Spec Style */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface)]">
+        <div className="flex items-center gap-3">
+          <div className="w-1.5 h-1.5 bg-[var(--accent-violet)] shadow-[0_0_8px_var(--accent-violet)]" />
+          <h3 className="font-display text-lg font-semibold tracking-tight text-[var(--color-text-primary)]">
             {category.title}
-          </h4>
-          <span className={`text-[10px] uppercase font-mono px-2.5 py-1 rounded-full text-white bg-gradient-to-r ${category.gradientClass} shadow-md shadow-slate-950/20`}>
-            Verified Skill
+          </h3>
+        </div>
+        <div className="hidden sm:flex items-center gap-2">
+          <span className="font-mono text-[8px] text-[var(--color-text-muted)] tracking-widest uppercase">
+            SPEC_0{Math.floor(Math.random() * 9) + 1}
           </span>
         </div>
+      </div>
 
-        {/* Skills Lists in a beautiful tags cloud style instead of progress bars */}
-        <div className="flex flex-wrap gap-2.5">
+      {/* Skills Grid inside Container - Optimized for breathing room */}
+      <div className="p-6 md:p-8 flex-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {category.skills.map((skill, idx) => {
             return (
-              <div
+              <motion.div
                 key={idx}
-                className="px-4 py-2 rounded-2xl bg-slate-950/60 border border-slate-900 text-sm font-medium text-slate-200 hover:text-white hover:border-slate-800 transition-all duration-200 flex items-center justify-center gap-1.5"
+                initial={{ opacity: 0, x: -5 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.04 }}
               >
-                <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${category.gradientClass}`} />
-                <span>{skill.name}</span>
-              </div>
+                <div
+                  className="flex items-center justify-between px-4 py-3.5 rounded-sm border border-[var(--color-border)] bg-[var(--color-base)]/30 hover:border-[var(--accent-gold)]/30 hover:bg-[var(--color-base)] transition-all duration-300 group"
+                >
+                  <span className="font-sans text-xs font-medium text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors truncate pr-2">
+                    {skill.name}
+                  </span>
+                  
+                  {/* Subtle technical indicator */}
+                  <div className="flex gap-1 shrink-0">
+                    {[1, 2, 3].map((dot) => (
+                      <div 
+                        key={dot}
+                        className={`w-1 h-1 rounded-full ${
+                          dot <= 2 ? 'bg-[var(--accent-violet)]/30 group-hover:bg-[var(--accent-gold)]' : 'bg-[var(--color-border)]'
+                        } transition-colors duration-300`} 
+                      />
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
             );
           })}
         </div>
       </div>
 
-      {/* Decorative dynamic advice message at bottom */}
-      <div className="mt-6 pt-4 border-t border-slate-900/30 flex items-center gap-2 text-[11px] text-slate-500 font-sans leading-relaxed">
-        <Lightbulb size={12} className="text-amber-500/80 animate-pulse shrink-0" />
-        <span>Deployed across multi-node interfaces as a developer and architect.</span>
+      {/* Container Footer - Decorative metadata */}
+      <div className="px-6 py-2.5 bg-[var(--color-base)]/50 border-t border-[var(--color-border)] flex items-center justify-between mt-auto">
+        <span className="font-mono text-[7px] text-[var(--color-text-muted)] tracking-widest uppercase">
+          Status: Optimized // System_Active
+        </span>
+        <div className="flex gap-2">
+          <div className="w-0.5 h-0.5 bg-[var(--accent-gold)] rounded-full animate-pulse" />
+          <div className="w-0.5 h-0.5 bg-[var(--color-text-muted)] rounded-full" />
+        </div>
       </div>
     </div>
   );

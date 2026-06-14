@@ -1,0 +1,16 @@
+[
+  {
+    "id": "coding-blocks",
+    "role": "Full Stack Development",
+    "company": "Coding Blocks",
+    "duration": "Oct 2025 - Nov 2025",
+    "technologies": ["HTML/CSS", "React.js", "MongoDB", "JavaScript", "APIs"],
+    "points": [
+      "Built responsive web applications, gaining hands-on experience in front-end and back-end development.",
+      "Worked with APIs and integrated databases, enhancing practical knowledge of application development.",
+      "Completed a summer training program, improving skills in web development and application integration."
+    ],
+    "gradientClass": "from-pink-500 to-rose-600",
+    "borderColor": "border-pink-500/30"
+  }
+]

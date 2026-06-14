@@ -5,41 +5,23 @@ import {
   skillsData,
   projectsData,
   workExperienceData,
-  educationData,
-  certificationsData
+  educationData
 } from './data';
 import Header from './components/Header';
 import BackgroundEffect from './components/BackgroundEffect';
-import { themesList, ThemeConfig } from './components/ThemeSelector';
 import ProjectCard from './components/ProjectCard';
 import SkillMeter from './components/SkillMeter';
 import {
-  Send,
   Mail,
-  Phone,
-  MapPin,
   Github,
   Linkedin,
-  Sparkles,
-  ChevronRight,
-  Briefcase,
-  GraduationCap,
-  Award,
-  Terminal,
-  Clock,
-  User,
-  Heart,
-  ExternalLink,
-  Code2,
-  CheckCircle2,
-  ListFilter
+  ArrowRight,
+  Download
 } from 'lucide-react';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
-  const currentTheme: ThemeConfig = themesList[0];
   const [projectFilter, setProjectFilter] = useState('All');
-  const [visitorPersona, setVisitorPersona] = useState<'recruiter' | 'general'>('recruiter');
 
   // Contact form submission states
   const [name, setName] = useState('');
@@ -47,7 +29,6 @@ export default function App() {
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [sessionInquiries, setSessionInquiries] = useState<{ id: string; name: string; email: string; message: string; timestamp: string }[]>([]);
 
   // Smooth scroll section tracking
   useEffect(() => {
@@ -78,737 +59,355 @@ export default function App() {
 
     setIsSubmitting(true);
     setTimeout(() => {
-      const newInquiry = {
-        id: Math.random().toString(36).substr(2, 9),
-        name,
-        email,
-        message,
-        timestamp: new Date().toLocaleTimeString()
-      };
-      setSessionInquiries(prev => [newInquiry, ...prev]);
       setIsSubmitting(false);
       setIsSubmitted(true);
-
-      // Clean inputs
       setName('');
       setEmail('');
       setMessage('');
-
-      // Auto dismiss success alert
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 5000);
+      setTimeout(() => setIsSubmitted(false), 5000);
     }, 1200);
   };
 
-  // Filter projects helper
   const filteredProjects = projectsData.filter(proj => {
     if (projectFilter === 'All') return true;
-    if (projectFilter === 'Development') {
-      return proj.category.includes('Development') || proj.technologies.includes('HTML5') || proj.technologies.includes('React.js');
-    }
-    if (projectFilter === 'Design') {
-      return proj.category.includes('Design') || proj.technologies.includes('Figma') || proj.technologies.includes('Wireframing');
-    }
-    return true;
+    return proj.category.includes(projectFilter);
   });
 
   return (
-    <div className="min-h-screen text-slate-100 font-sans selection:bg-pink-500/30 selection:text-white">
-      {/* Dynamic Background Glowing Blobs and Grid lines */}
+    <div className="min-h-screen text-[var(--color-text-primary)] font-sans selection:bg-[var(--accent-gold)]/30 selection:text-white">
+      {/* Dynamic Background */}
       <BackgroundEffect />
 
-      {/* Glass navigation header */}
+      {/* Header */}
       <Header activeSection={activeSection} setActiveSection={setActiveSection} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 space-y-28 relative z-10 overflow-hidden">
+      <main className="max-w-[1100px] mx-auto px-6 pt-32 pb-24 space-y-32 relative z-10 overflow-hidden">
         
         {/* HERO SECTION */}
-        <section id="hero" className="min-h-[85vh] flex flex-col justify-center relative py-12 md:py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left bio column */}
-            <div className="lg:col-span-7 space-y-6 text-left">
-              {/* Introduction Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800/80 text-xs text-slate-300">
-                <Sparkles size={13} className="text-amber-400 animate-spin" />
-                <span className="font-semibold font-mono tracking-wide">
-                  Welcome, customize my profile as a:
+        <section id="hero" className="min-h-[70vh] flex flex-col justify-center relative py-12 scroll-mt-32">
+          <div className="space-y-10 max-w-3xl">
+            {/* Status Pill */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-teal)] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent-teal)]"></span>
+              </span>
+              <span className="font-sans text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-[0.15em]">
+                {personalInfo.availability}
+              </span>
+            </motion.div>
+
+            {/* Name and Title */}
+            <div className="space-y-4">
+              <motion.h1 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="font-display font-light text-hero leading-[0.9] tracking-tighter"
+              >
+                {personalInfo.name.split(' ')[0]}
+              </motion.h1>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
+                className="flex items-center gap-4"
+              >
+                <div className="h-px w-12 bg-[var(--accent-violet)]" />
+                <span className="font-sans font-medium text-[var(--color-text-secondary)] text-lg tracking-wide italic">
+                  {personalInfo.title}
                 </span>
-                <div className="flex gap-1 bg-slate-950 p-0.5 rounded-full border border-slate-800 ml-1">
-                  <button
-                    onClick={() => setVisitorPersona('recruiter')}
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-sans transition-all cursor-pointer ${
-                      visitorPersona === 'recruiter' ? 'bg-pink-500 text-white font-semibold' : 'text-slate-500 hover:text-slate-300'
-                    }`}
-                  >
-                    Recruiter
-                  </button>
-                  <button
-                    onClick={() => setVisitorPersona('general')}
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-sans transition-all cursor-pointer ${
-                      visitorPersona === 'general' ? 'bg-cyan-500 text-white font-semibold' : 'text-slate-500 hover:text-slate-300'
-                    }`}
-                  >
-                    Creator
-                  </button>
-                </div>
-              </div>
-
-              {/* Colorful Title Header */}
-              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
-                Hi, I'm{' '}
-                <span className={`text-transparent bg-clip-text bg-gradient-to-r ${currentTheme.gradientText} drop-shadow-sm`}>
-                  {personalInfo.name}
-                </span>
-              </h1>
-
-              {/* Dynamic Subtitle banner depending on persona selection */}
-              <div className="min-h-[50px]">
-                <AnimatePresence mode="wait">
-                  {visitorPersona === 'recruiter' && (
-                    <motion.p
-                      key="rec"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 10 }}
-                      className="text-lg md:text-xl font-medium text-slate-300 leading-relaxed font-sans"
-                    >
-                      A creative <span className={`underline decoration-2 ${currentTheme.textColor} underline-offset-4`}>Web Developer</span> specialize in translating wireframes into fluid React apps. Ready to join your squad immediately.
-                    </motion.p>
-                  )}
-                  {visitorPersona === 'general' && (
-                    <motion.p
-                      key="gen"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 10 }}
-                      className="text-lg md:text-xl font-medium text-slate-300 leading-relaxed font-sans"
-                    >
-                      Crafting delightful user interactions using high-fidelity Figma vectors, Tailwind UI tokens, and interactive layout elements.
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Personal Intro Summary */}
-              <p className="text-sm md:text-base text-slate-400 leading-relaxed max-w-2xl">
-                {personalInfo.about}
-              </p>
-
-              {/* Primary Call to actions */}
-              <div className="flex flex-wrap items-center gap-4 pt-4">
-                <button
-                  onClick={() => {
-                    const el = document.getElementById('contact');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className={`px-6 py-3.5 rounded-2xl text-sm font-semibold font-sans tracking-wide text-white ${currentTheme.buttonBg} hover:opacity-90 shadow-lg shadow-violet-500/20 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer flex items-center gap-2`}
-                >
-                  <span>Work With Me</span>
-                  <ChevronRight size={16} />
-                </button>
-                <button
-                  onClick={() => {
-                    const el = document.getElementById('projects');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-3.5 rounded-2xl text-sm font-semibold font-sans tracking-wide text-slate-300 bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-all duration-300 cursor-pointer"
-                >
-                  View Technical Projects
-                </button>
-              </div>
-
-              {/* Quick Contacts Banner */}
-              <div className="flex flex-wrap gap-5 pt-6 text-[11px] text-slate-500 font-mono">
-                <div className="flex items-center gap-1.5 hover:text-slate-300 transition-colors">
-                  <MapPin size={12} className="text-pink-500" />
-                  <span>{personalInfo.location}</span>
-                </div>
-                <div className="flex items-center gap-1.5 hover:text-slate-300 transition-colors">
-                  <Clock size={12} className="text-violet-500" />
-                  <span>Graduating March 2026</span>
-                </div>
-              </div>
+              </motion.div>
             </div>
 
-            {/* Right bento stats column */}
-            <div className="lg:col-span-5 relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/10 via-violet-500/10 to-transparent blur-3xl pointer-events-none" />
-              
-              <div className="relative glass-panel p-6 sm:p-7 rounded-3xl border border-white/5 shadow-2xl space-y-6">
-                
-                {/* Visual Header */}
-                <div className="flex items-center gap-1.5 pb-3 border-b border-slate-900/40">
-                  <span className="w-1.5 h-3.5 rounded-full bg-pink-500" />
-                  <span className="text-xs uppercase font-mono tracking-widest text-slate-400">Core Metrics Index</span>
+            {/* Tagline */}
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="font-display font-light text-3xl md:text-4xl text-[var(--color-text-secondary)] leading-tight italic"
+            >
+              Building systems that <span className="text-[var(--color-text-primary)] font-normal not-italic">think clearly.</span>
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+              className="flex flex-wrap items-center gap-6 pt-4"
+            >
+              <button
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                className="group px-8 py-4 rounded-sm font-sans font-bold text-xs tracking-widest text-black bg-[var(--accent-gold)] hover:bg-white transition-all duration-300 flex items-center gap-3 cursor-pointer"
+              >
+                <span>VIEW WORK</span>
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button
+                className="group px-8 py-4 rounded-sm font-sans font-bold text-xs tracking-widest text-[var(--color-text-primary)] border border-[var(--color-border)] hover:border-[var(--accent-gold)] transition-all duration-300 flex items-center gap-3 cursor-pointer"
+              >
+                <span>DOWNLOAD CV</span>
+                <Download size={14} className="group-hover:translate-y-0.5 transition-transform" />
+              </button>
+            </motion.div>
+
+            {/* Architectural Stats Row */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 1 }}
+              className="pt-12 space-y-6"
+            >
+              <div className="h-px w-full bg-[var(--gradient-rule)]" />
+              <div className="flex flex-wrap gap-12 font-sans text-[10px] font-bold tracking-[0.2em] text-[var(--color-text-muted)] uppercase">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">12</span>
+                  <span>Projects</span>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  
-                  {/* Stat Card 1 */}
-                  <div className="p-4 rounded-2xl bg-slate-950/50 border border-slate-900 flex flex-col justify-between min-h-[100px] hover:border-slate-800 transition-colors">
-                    <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500">Degree Focus</span>
-                    <div>
-                      <h4 className="text-xl font-display font-bold text-white">BCA</h4>
-                      <p className="text-[10px] text-slate-400 font-mono mt-0.5">Hindustan College</p>
-                    </div>
-                  </div>
-
-                  {/* Stat Card 2 */}
-                  <div className="p-4 rounded-2xl bg-slate-950/50 border border-slate-900 flex flex-col justify-between min-h-[100px] hover:border-slate-800 transition-colors">
-                    <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500">Expertise Area</span>
-                    <div>
-                      <h4 className="text-xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-violet-400">UI/UX</h4>
-                      <p className="text-[10px] text-slate-400 font-mono mt-0.5">Figma, Wireframing</p>
-                    </div>
-                  </div>
-
-                  {/* Stat Card 3 */}
-                  <div className="p-4 rounded-2xl bg-slate-950/50 border border-slate-900 flex flex-col justify-between min-h-[100px] hover:border-slate-800 transition-colors">
-                    <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500">Certified Skills</span>
-                    <div>
-                      <h4 className="text-xl font-display font-bold text-white">15+</h4>
-                      <p className="text-[10px] text-slate-400 font-mono mt-0.5">Durable Core Stack</p>
-                    </div>
-                  </div>
-
-                  {/* Stat Card 4 */}
-                  <div className="p-4 rounded-2xl bg-slate-950/50 border border-slate-900 flex flex-col justify-between min-h-[100px] hover:border-slate-800 transition-colors">
-                    <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500">Industry Training</span>
-                    <div>
-                      <h4 className="text-xl font-display font-bold text-emerald-400">Full Stack</h4>
-                      <p className="text-[10px] text-slate-400 font-mono mt-0.5">React.js & APIs</p>
-                    </div>
-                  </div>
-
+                <div className="flex flex-col gap-1">
+                  <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">4</span>
+                  <span>Years Exp.</span>
                 </div>
-
-                {/* Micro tech logo line */}
-                <div className="bg-slate-950 p-3 rounded-2xl border border-slate-900 flex items-center justify-around">
-                  <span className="text-[10px] font-mono text-slate-500">#HTML5</span>
-                  <span className="text-[10px] font-mono text-slate-500">#CSS3</span>
-                  <span className="text-[10px] font-mono text-slate-500">#ReactJS</span>
-                  <span className="text-[10px] font-mono text-slate-500">#Figma</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">8</span>
+                  <span>Tech Stacks</span>
                 </div>
-
               </div>
-            </div>
-
+            </motion.div>
           </div>
         </section>
 
         {/* PROJECTS SECTION */}
-        <section id="projects" className="space-y-10 py-8 scroll-mt-20">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 text-left">
-            <div>
-              <div className="inline-flex items-center gap-1 text-xs font-mono font-bold tracking-widest text-slate-500 uppercase mb-2">
-                <Code2 size={12} className={currentTheme.textColor} /> Explore Creations
+        <section id="projects" className="relative space-y-16 scroll-mt-32">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 relative">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-1.5 h-1.5 bg-[var(--accent-violet)]" />
+                <span className="font-sans font-bold text-[10px] tracking-[0.3em] text-[var(--color-text-muted)] uppercase">Portfolio Showcase</span>
               </div>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-white tracking-tight">
-                Project
+              <h2 className="font-display text-display font-semibold tracking-tight">
+                Selected <span className="font-light italic">Works</span>
               </h2>
             </div>
 
             {/* Filter buttons */}
-            <div className="flex flex-wrap items-center gap-1.5 bg-slate-900/60 p-1 rounded-2xl border border-white/5 backdrop-blur-sm self-start">
+            <div className="flex flex-wrap items-center gap-8 border-b border-[var(--color-border)] pb-2">
               {['All', 'Development', 'Design'].map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setProjectFilter(filter)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-medium tracking-wide transition-all ${
-                    projectFilter === filter
-                      ? `bg-gradient-to-r ${currentTheme.gradientText} text-white font-bold shadow-md shadow-slate-950/40`
-                      : 'text-slate-400 hover:text-white'
+                  className={`relative pb-2 text-[10px] font-bold tracking-widest uppercase transition-all cursor-pointer ${
+                    projectFilter === filter ? 'text-[var(--accent-gold)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
                   }`}
                 >
                   {filter}
+                  {projectFilter === filter && (
+                    <motion.div layoutId="filterUnderline" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent-gold)]" />
+                  )}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Grid list of dynamic project cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <AnimatePresence mode="popLayout">
-              {filteredProjects.map((proj) => (
-                <motion.div
-                  key={proj.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ProjectCard project={proj} theme={currentTheme} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
+          {/* Projects Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 relative">
+             {/* Grid Reveal Background for this section */}
+             <div className="absolute -inset-x-12 -inset-y-8 animate-grid-reveal pointer-events-none" style={{
+                backgroundImage: 'linear-gradient(var(--color-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-border) 1px, transparent 1px)',
+                backgroundSize: '3rem 3rem'
+              }} />
+            {filteredProjects.map((proj) => (
+              <div key={proj.id}>
+                <ProjectCard project={proj} />
+              </div>
+            ))}
           </div>
         </section>
 
         {/* SKILLS SECTION */}
-        <section id="skills" className="space-y-12 py-8 scroll-mt-20">
-          
-          {/* Header */}
-          <div className="text-left">
-            <div className="inline-flex items-center gap-1 text-xs font-mono font-bold tracking-widest text-slate-500 uppercase mb-2">
-              <Award size={12} className={currentTheme.textColor} /> My Expertise
+        <section id="skills" className="relative space-y-20 scroll-mt-32">
+          <div className="space-y-4 text-center">
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-1.5 h-1.5 bg-[var(--accent-violet)]" />
+              <span className="font-sans font-bold text-[10px] tracking-[0.3em] text-[var(--color-text-muted)] uppercase">Capabilities</span>
             </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white tracking-tight">
-              Skill
+            <h2 className="font-display text-display font-semibold tracking-tight">
+              Technical <span className="font-light italic">Stack</span>
             </h2>
-            <p className="text-sm text-slate-400 mt-2 max-w-2xl leading-relaxed">
-              Formulated across structured collegiate courseworks, industrial programming certifications, and custom web implementation initiatives.
-            </p>
           </div>
 
-          {/* Grid layout for skills categorizations */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {skillsData.map((category, idx) => (
-              <SkillMeter key={idx} category={category} theme={currentTheme} />
+              <div key={idx}>
+                <SkillMeter category={category} />
+              </div>
             ))}
           </div>
         </section>
 
-        {/* WORK EXPERIENCE */}
-        <section id="experience" className="space-y-10 py-8 scroll-mt-20">
-          
-          {/* Header */}
-          <div className="text-left">
-            <div className="inline-flex items-center gap-1 text-xs font-mono font-bold tracking-widest text-slate-500 uppercase mb-2">
-              <Briefcase size={12} className={currentTheme.textColor} /> Industrial background
+        {/* EXPERIENCE & EDUCATION */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 lg:gap-32">
+          {/* Experience */}
+          <section id="experience" className="space-y-16 scroll-mt-32">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-1.5 h-1.5 bg-[var(--accent-violet)]" />
+                <span className="font-sans font-bold text-[10px] tracking-[0.3em] text-[var(--color-text-muted)] uppercase">Career Path</span>
+              </div>
+              <h2 className="font-display text-4xl font-semibold tracking-tight">
+                Work <span className="font-light italic">Experience</span>
+              </h2>
             </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white tracking-tight">
-              Professional Work History
-            </h2>
-          </div>
 
-          <div className="relative">
-            {/* Connected Vertical Ribbon line with glow */}
-            <div className="absolute left-6 inset-y-0 w-[2px] bg-slate-900 border-r border-slate-800" />
-
-            <div className="space-y-8">
+            <div className="relative space-y-12">
+              <div className="absolute left-0 inset-y-0 w-px bg-[var(--color-border)]" />
               {workExperienceData.map((job) => (
-                <div key={job.id} className="relative pl-14 sm:pl-16 flex flex-col sm:flex-row gap-4 items-start text-left">
-                  
-                  {/* Bullet node dot representing calendar state */}
-                  <div className={`absolute left-4 w-4 h-4 rounded-full border-4 border-slate-950 bg-pink-500 animate-pulse mt-1.5`} />
-
-                  {/* Main Work Details Card */}
-                  <div className="glass-panel-glow p-6 rounded-3xl border border-white/5 hover:border-slate-800 transition-all duration-300 relative overflow-hidden flex-1 shadow-xl">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 mb-4 border-b border-slate-900/40 pb-4">
-                      <div>
-                        <span className={`text-[10px] uppercase font-mono tracking-widest text-slate-500`}>ROLE EXPERIENCE</span>
-                        <h4 className="text-lg font-display font-semibold text-white mt-0.5">
-                          {job.role}
-                        </h4>
-                        <p className="text-xs text-slate-400 font-sans mt-0.5">
-                          Company: <span className="text-white font-medium">{job.company}</span>
-                        </p>
-                      </div>
-
-                      <div className="flex flex-col sm:items-end">
-                        <span className="text-xs font-mono font-semibold text-pink-400 bg-pink-500/10 border border-pink-500/20 px-3 py-1 rounded-full self-start sm:self-auto">
-                          {job.duration}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Work achievements points */}
-                    <div className="space-y-4 mb-6">
-                      {job.points.map((point, index) => (
-                        <div key={index} className="flex gap-3 items-start">
-                          <div className={`mt-2 w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0`} />
-                          <p className="text-sm text-slate-300 leading-relaxed">
-                            {point}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Custom tech tags learned here */}
-                    <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-900/20">
-                      {job.technologies.map((tech, idx) => (
-                        <span key={idx} className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-slate-950 text-slate-400 border border-slate-900">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+                <div key={job.id} className="relative pl-8 space-y-4">
+                  <div className="absolute left-[-2px] top-1.5 w-[5px] h-[5px] rounded-full bg-[var(--accent-violet)]" />
+                  <div className="space-y-1">
+                    <span className="font-mono text-[10px] text-[var(--accent-violet)] font-bold">{job.duration}</span>
+                    <h4 className="font-display text-xl font-bold text-[var(--color-text-primary)]">{job.role}</h4>
+                    <p className="font-sans text-sm text-[var(--color-text-secondary)]">{job.company}</p>
                   </div>
-
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* EDUCATION SECTION */}
-        <section id="education" className="space-y-10 py-8 scroll-mt-20">
-          
-          {/* Header */}
-          <div className="text-left">
-            <div className="inline-flex items-center gap-1 text-xs font-mono font-bold tracking-widest text-slate-500 uppercase mb-2">
-              <GraduationCap size={12} className={currentTheme.textColor} /> Academic Roadmap
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white tracking-tight">
-              Educational Qualifications
-            </h2>
-          </div>
-
-          {/* Timeline alignment for educational records */}
-          <div className="relative">
-            <div className="absolute left-6 inset-y-0 w-[2px] bg-slate-900 border-r border-slate-800" />
-
-            <div className="space-y-6">
-              {educationData.map((edu) => (
-                <div key={edu.id} className="relative pl-14 sm:pl-16 flex flex-col sm:flex-row gap-4 items-start text-left">
-                  
-                  {/* Timeline bullet dot */}
-                  <div className={`absolute left-4 w-4 h-4 rounded-full border-4 border-slate-950 bg-violet-500 mt-1.5`} />
-
-                  {/* Main education container */}
-                  <div className="glass-panel p-5 rounded-2xl border border-white/5 hover:border-slate-800/80 transition-all duration-300 relative overflow-hidden flex-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-md bg-slate-950/20">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span className={`px-2.5 py-0.5 text-[9px] font-mono tracking-wider font-semibold rounded-full text-white bg-gradient-to-r ${edu.gradientClass}`}>
-                          {edu.badge}
-                        </span>
-                        {edu.score && (
-                          <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
-                            {edu.score}
-                          </span>
-                        )}
-                      </div>
-
-                      <h4 className="text-lg font-display font-semibold text-white tracking-tight">
-                        {edu.institution}
-                      </h4>
-                      <p className="text-xs text-slate-400 font-sans mt-0.5">
-                        {edu.degree}
-                      </p>
-                    </div>
-
-                    <div className="shrink-0 flex items-center justify-start sm:justify-end">
-                      <span className="text-xs font-mono font-bold text-slate-500 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl">
-                        {edu.duration}
-                      </span>
-                    </div>
-                  </div>
-
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CERTIFICATIONS SHOWCASE */}
-        <section id="certifications" className="space-y-10 py-8 scroll-mt-20">
-          
-          {/* Header */}
-          <div className="text-left">
-            <div className="inline-flex items-center gap-1 text-xs font-mono font-bold tracking-widest text-slate-500 uppercase mb-2">
-              <Award size={12} className={currentTheme.textColor} /> Verified Credentials
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white tracking-tight">
-              Professional Certifications
-            </h2>
-            <p className="text-sm text-slate-400 mt-2 max-w-2xl leading-relaxed">
-              Showcasing specialized development badges, design accreditations, and optimized programming certifications issued by certified partners.
-            </p>
-          </div>
-
-          {/* Grid layout for Certificates info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {certificationsData.map((cert) => (
-              <div
-                key={cert.id}
-                className="glass-panel p-6 rounded-2xl border border-white/5 relative overflow-hidden flex flex-col justify-between hover:border-slate-800 hover:shadow-2xl hover:shadow-violet-500/5 transition-all duration-300 text-left"
-              >
-                {/* Accent thin colored background glow bar */}
-                <div className={`absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r ${cert.gradientClass}`} />
-
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-widest">
-                      {cert.issuer}
-                    </span>
-                    <span className="text-[10px] font-mono text-slate-400 font-semibold bg-slate-950 border border-slate-900 px-2 py-0.5 rounded-md">
-                      {cert.date}
-                    </span>
-                  </div>
-
-                  <h4 className="text-base font-display font-semibold text-white tracking-wide mb-3 line-clamp-1">
-                    {cert.title}
-                  </h4>
-
-                  {/* Highlight skillslearned */}
-                  <div className="flex flex-wrap gap-1 mb-5">
-                    {cert.skills.map((skill, scidx) => (
-                      <span
-                        key={scidx}
-                        className="text-[9px] font-mono px-2 py-0.5 rounded bg-slate-950/80 border border-slate-900 text-slate-400"
-                      >
-                        {skill}
-                      </span>
+                  <ul className="space-y-3 pt-2">
+                    {job.points.map((point, i) => (
+                      <li key={i} className="font-sans text-xs text-[var(--color-text-muted)] leading-relaxed flex gap-3">
+                        <span className="text-[var(--accent-violet)] pt-1">/</span>
+                        {point}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
+              ))}
+            </div>
+          </section>
 
-                <div className="pt-3 border-t border-slate-900/50 flex justify-between items-center text-[10px] text-slate-500 font-mono">
-                  <div className="flex items-center gap-1">
-                    <CheckCircle2 size={11} className="text-emerald-500" />
-                    <span>ID: VERIFIED_GRAD</span>
-                  </div>
-                  <span>100% Genuine</span>
-                </div>
+          {/* Education */}
+          <section id="education" className="space-y-16 scroll-mt-32">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-1.5 h-1.5 bg-[var(--accent-violet)]" />
+                <span className="font-sans font-bold text-[10px] tracking-[0.3em] text-[var(--color-text-muted)] uppercase">Academic</span>
               </div>
-            ))}
-          </div>
-        </section>
+              <h2 className="font-display text-4xl font-semibold tracking-tight">
+                Educational <span className="font-light italic">History</span>
+              </h2>
+            </div>
 
-        {/* WORKSPACE & CONTACT FORM */}
-        <section id="contact" className="space-y-10 py-8 scroll-mt-20">
+            <div className="space-y-10">
+              {educationData.map((edu) => (
+                <div key={edu.id} className="group space-y-2 border-l border-[var(--color-border)] pl-8 hover:border-[var(--accent-violet)] transition-colors duration-500">
+                  <span className="font-mono text-[10px] text-[var(--color-text-muted)] font-bold">{edu.duration}</span>
+                  <h4 className="font-display text-lg font-bold text-[var(--color-text-primary)]">{edu.institution}</h4>
+                  <div className="flex items-center gap-3">
+                    <p className="font-sans text-xs text-[var(--color-text-secondary)]">{edu.degree}</p>
+                    {edu.score && <span className="text-[10px] text-[var(--accent-teal)] font-bold px-2 py-0.5 rounded-sm bg-[var(--accent-teal)]/5">{edu.score}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        {/* CONTACT SECTION */}
+        <section id="contact" className="relative space-y-16 scroll-mt-32">
+          <div className="h-px w-full bg-[var(--gradient-rule)] mb-32" />
           
-          {/* Header */}
-          <div className="text-left">
-            <div className="inline-flex items-center gap-1 text-xs font-mono font-bold tracking-widest text-slate-500 uppercase mb-2">
-              <Mail size={12} className={currentTheme.textColor} /> Signal Transmitter
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white tracking-tight">
-              Start a Conversation
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            {/* Left direct contact details */}
-            <div className="lg:col-span-5 flex flex-col gap-6 text-left">
-              <div className="glass-panel p-6 sm:p-7 rounded-3xl border border-white/5 space-y-6 shadow-xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-pink-500/5 to-transparent blur-xl" />
-                
-                <h3 className="font-display font-semibold text-lg text-white">
-                  Direct Communications
-                </h3>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                  Feel free to reach out for industrial collaborations, project opportunities, or structural recruitment steps. I reply promptly.
-                </p>
-
-                <div className="space-y-4">
-                  {/* Item 1 */}
-                  <a
-                    href={`mailto:${personalInfo.email}`}
-                    className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-950/60 border border-slate-900 hover:border-slate-800 hover:bg-slate-900/30 transition-all group cursor-pointer"
-                  >
-                    <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20">
-                      <Mail size={16} />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-mono text-slate-500 uppercase">Send Email Direct</p>
-                      <p className="text-sm font-semibold text-white group-hover:text-pink-400 transition-colors truncate">
-                        {personalInfo.email}
-                      </p>
-                    </div>
-                  </a>
-
-                  {/* Item 2 */}
-                  <a
-                    href={`tel:${personalInfo.phone}`}
-                    className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-950/60 border border-slate-900 hover:border-slate-800 hover:bg-slate-900/30 transition-all group cursor-pointer"
-                  >
-                    <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                      <Phone size={16} />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-mono text-slate-500 uppercase">Call Endpoint</p>
-                      <p className="text-sm font-semibold text-white group-hover:text-violet-400 transition-colors font-mono">
-                        +91 {personalInfo.phone}
-                      </p>
-                    </div>
-                  </a>
-
-                  {/* Item 3 */}
-                  <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-950/60 border border-slate-900">
-                    <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                      <MapPin size={16} />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-mono text-slate-500 uppercase">Location</p>
-                      <p className="text-sm font-semibold text-slate-200">
-                        {personalInfo.location}
-                      </p>
-                    </div>
-                  </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+            <div className="space-y-10">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-1.5 h-1.5 bg-[var(--accent-violet)]" />
+                  <span className="font-sans font-bold text-[10px] tracking-[0.3em] text-[var(--color-text-muted)] uppercase">Get in touch</span>
                 </div>
-
-                {/* Direct Social Buttons */}
-                <div className="pt-4 border-t border-slate-900/60 flex items-center justify-between">
-                  <span className="text-xs text-slate-400 font-sans">Find me online:</span>
-                  <div className="flex gap-2">
-                    <a
-                      href={personalInfo.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-950 border border-slate-900 text-slate-400 hover:text-white transition-all"
-                    >
-                      <Github size={15} />
-                    </a>
-                    <a
-                      href={personalInfo.linkedin}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-950 border border-slate-900 text-slate-400 hover:text-white transition-all"
-                    >
-                      <Linkedin size={15} />
-                    </a>
+                <h2 className="font-display text-display font-semibold tracking-tight">
+                  Let's craft <span className="font-light italic">something</span> meaningful.
+                </h2>
+              </div>
+              
+              <div className="space-y-6 pt-4">
+                <a href={`mailto:${personalInfo.email}`} className="group flex items-center gap-6 p-6 rounded-sm border border-[var(--color-border)] hover:border-[var(--accent-gold)] transition-all duration-300">
+                  <div className="w-12 h-12 flex items-center justify-center rounded-sm bg-[var(--color-surface)] text-[var(--accent-gold)] border border-[var(--color-border)] group-hover:bg-[var(--accent-gold)] group-hover:text-black transition-all">
+                    <Mail size={20} />
                   </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1">Email</p>
+                    <p className="text-lg font-display text-[var(--color-text-primary)]">{personalInfo.email}</p>
+                  </div>
+                </a>
+                <div className="flex gap-12 pl-6 pt-4 font-sans text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">
+                  <a href={personalInfo.github} target="_blank" rel="noreferrer" className="hover:text-[var(--accent-gold)] transition-colors">GitHub</a>
+                  <a href={personalInfo.linkedin} target="_blank" rel="noreferrer" className="hover:text-[var(--accent-gold)] transition-colors">LinkedIn</a>
                 </div>
-
               </div>
             </div>
 
-            {/* Right message submission container */}
-            <div className="lg:col-span-7">
-              <div className="glass-panel-glow p-6 sm:p-8 rounded-3xl border border-white/5 relative overflow-hidden shadow-2xl">
-                
-                {/* Form header */}
-                <div className="flex items-center justify-between pb-4 border-b border-slate-900/80 mb-6">
-                  <div className="flex items-center gap-2">
-                    <Terminal size={16} className={currentTheme.textColor} />
-                    <span className="text-xs font-mono font-semibold uppercase tracking-widest text-slate-300">
-                      SECURE MESSAGE TERMINAL
-                    </span>
-                  </div>
-                  <span className="w-2 h-2 rounded-full bg-indigo-500 animate-ping" />
+            <div className="glass-panel p-10 sm:p-12">
+              <form onSubmit={handleSendMessage} className="space-y-8">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full bg-transparent border-b border-[var(--color-border)] py-4 text-sm focus:outline-none focus:border-[var(--accent-gold)] transition-all"
+                  />
                 </div>
-
-                <form onSubmit={handleSendMessage} className="space-y-4 text-left">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Name input */}
-                    <div className="space-y-1.5">
-                      <label htmlFor="form-name" className="text-xs font-mono text-slate-500 uppercase">Your Name</label>
-                      <input
-                        id="form-name"
-                        type="text"
-                        required
-                        placeholder="John Doe"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-900 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all font-sans"
-                      />
-                    </div>
-
-                    {/* Email input */}
-                    <div className="space-y-1.5">
-                      <label htmlFor="form-email" className="text-xs font-mono text-slate-500 uppercase">Email Address</label>
-                      <input
-                        id="form-email"
-                        type="email"
-                        required
-                        placeholder="john@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-900 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all font-sans"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Message message */}
-                  <div className="space-y-1.5">
-                    <label htmlFor="form-text" className="text-xs font-mono text-slate-500 uppercase">Message Content</label>
-                    <textarea
-                      id="form-text"
-                      required
-                      rows={4}
-                      placeholder="Type your message details here..."
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-900 rounded-2xl p-4 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all font-sans resize-none"
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between gap-4 pt-2">
-                    <p className="text-[10px] text-slate-500 font-mono leading-relaxed max-w-xs">
-                      Clicking send will add this inquiry into the active local session queues for inspection.
-                    </p>
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className={`px-6 py-3 rounded-xl text-xs font-mono font-bold tracking-wider uppercase text-white bg-gradient-to-r ${currentTheme.gradientText} hover:opacity-90 transition-opacity cursor-pointer flex items-center gap-2`}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="w-3.5 h-3.5 rounded-full border-2 border-white/20 border-t-white animate-spin" />
-                          <span>SENDING...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Send size={12} />
-                          <span>TRANSMIT SIGNAL</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </form>
-
-                {/* Session Messages ledger panel */}
-                {sessionInquiries.length > 0 && (
-                  <div className="mt-8 border-t border-slate-900 pt-6 text-left">
-                    <h4 className="text-xs font-mono font-bold text-slate-300 uppercase mb-3 flex items-center gap-1.5">
-                      <Terminal size={12} className="text-green-500" />
-                      In-Memory Recruiter Ledger (Local Session Buffer)
-                    </h4>
-                    
-                    <div className="space-y-3 max-h-[220px] overflow-y-auto no-scrollbar">
-                      {sessionInquiries.map((inq) => (
-                        <div key={inq.id} className="p-3.5 rounded-xl bg-slate-950 border border-slate-900 space-y-1">
-                          <div className="flex items-center justify-between text-[10px] font-mono">
-                            <span className="text-indigo-400 font-bold">{inq.name}</span>
-                            <span className="text-slate-600">{inq.timestamp}</span>
-                          </div>
-                          <p className="text-[10.5px] text-zinc-500 font-mono italic truncate">{inq.email}</p>
-                          <p className="text-xs text-slate-400 font-sans mt-1 leading-relaxed pl-2 border-l border-indigo-500/20">
-                            {inq.message}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Submission notification pop */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">Email Address</label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full bg-transparent border-b border-[var(--color-border)] py-4 text-sm focus:outline-none focus:border-[var(--accent-gold)] transition-all"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">Message</label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="w-full bg-transparent border-b border-[var(--color-border)] py-4 text-sm focus:outline-none focus:border-[var(--accent-gold)] transition-all resize-none"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-5 rounded-sm font-sans font-bold text-xs tracking-[0.2em] text-black bg-[var(--accent-gold)] hover:bg-white transition-all duration-300 disabled:opacity-50 cursor-pointer"
+                >
+                  {isSubmitting ? 'TRANSMITTING...' : 'SEND MESSAGE'}
+                </button>
                 {isSubmitted && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute bottom-6 right-6 left-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-3"
-                  >
-                    <CheckCircle2 className="text-emerald-500 shrink-0" size={18} />
-                    <div className="text-left">
-                      <p className="text-xs font-bold text-emerald-400">Message Transmitted Successfully!</p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">Stored inside in-memory session buffer logs securely.</p>
-                    </div>
-                  </motion.div>
+                  <p className="text-[10px] text-[var(--accent-teal)] font-bold text-center uppercase tracking-widest animate-pulse mt-4">
+                    Message transmitted successfully.
+                  </p>
                 )}
-
-              </div>
+              </form>
             </div>
-
           </div>
         </section>
 
       </main>
 
-      {/* Decorative professional footer line */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-12 text-slate-500 relative z-10 text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-          <div className="flex items-center justify-center gap-1.5 text-xs">
-            <span>Handcrafted with</span>
-            <Heart size={11} className="text-pink-500 animate-pulse fill-pink-500" />
-            <span>by Parthasarathy K &copy; {new Date().getFullYear()}</span>
+      {/* FOOTER */}
+      <footer className="border-t border-[var(--color-border)] py-20 text-center">
+        <div className="max-w-[1100px] mx-auto px-6 space-y-8">
+          <div className="font-display italic text-[var(--color-text-muted)] text-xl font-light">
+            crafting precision <span className="not-italic text-[var(--color-text-secondary)] font-normal">&</span> elegance
+          </div>
+          <div className="font-sans text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.3em]">
+            &copy; {new Date().getFullYear()} Parthasarathy K
           </div>
         </div>
       </footer>

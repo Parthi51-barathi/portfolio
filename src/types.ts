@@ -1,14 +1,13 @@
 export interface Project {
   id: string;
   title: string;
+  year: string;
+  status: 'Live' | 'Archived' | 'In Progress';
   category: string;
   description: string;
   technologies: string[];
   liveUrl?: string;
   githubUrl?: string;
-  gradientFrom: string;
-  gradientTo: string;
-  accentColor: string;
   stats?: { label: string; value: string }[];
 }
 
