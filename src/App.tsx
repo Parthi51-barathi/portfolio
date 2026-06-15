@@ -18,6 +18,8 @@ import {
   ArrowRight,
   Download
 } from 'lucide-react';
+import profileImage from '../assets/profile.jpeg';
+import resumePdf from '../assets/Resume.pdf';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
@@ -160,7 +162,7 @@ export default function App() {
                 <button
                   onClick={() => {
                     const link = document.createElement('a');
-                    link.href = '/assets/Resume.pdf';
+                    link.href = resumePdf;
                     link.download = 'Parthasarathy_K_Resume.pdf';
                     document.body.appendChild(link);
                     link.click();
@@ -209,7 +211,7 @@ export default function App() {
               <div className="relative w-64 rounded-lg overflow-hidden group hover:scale-105 transition-transform duration-500">
                 <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-[#0f0f15] via-[#080910] to-[#080910]">
                   <img
-                    src="/assets/profile.jpeg"
+                    src={profileImage}
                     alt={personalInfo.name}
                     className="w-full h-full object-cover mix-blend-screen"
                   />
