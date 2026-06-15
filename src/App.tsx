@@ -22,6 +22,12 @@ import {
 export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
   const [projectFilter, setProjectFilter] = useState('All');
+  const sectionReveal = {
+    initial: { opacity: 0, y: 28 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.2 },
+    transition: { duration: 0.7, ease: 'easeOut' },
+  } as const;
 
   // Contact form submission states
   const [name, setName] = useState('');
@@ -181,8 +187,8 @@ export default function App() {
                     <span>Projects</span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">2</span>
-                    <span>Years Exp.</span>
+                    <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">Fresher</span>
+                    <span>Profile</span>
                   </div>
                   <div className="flex flex-col gap-1">
                     <span className="text-[var(--color-text-secondary)] text-base font-display italic lowercase font-light">7</span>
@@ -217,7 +223,7 @@ export default function App() {
         </section>
 
         {/* PROJECTS SECTION */}
-        <section id="projects" className="relative space-y-16 scroll-mt-32">
+        <motion.section id="projects" className="relative space-y-16 scroll-mt-32" {...sectionReveal}>
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 relative">
             <div className="space-y-4">
@@ -262,10 +268,10 @@ export default function App() {
               </div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* SKILLS SECTION */}
-        <section id="skills" className="relative space-y-20 scroll-mt-32">
+        <motion.section id="skills" className="relative space-y-20 scroll-mt-32" {...sectionReveal}>
           <div className="space-y-4 text-center">
             <div className="flex items-center justify-center gap-3">
               <div className="w-1.5 h-1.5 bg-[var(--accent-violet)]" />
@@ -283,12 +289,12 @@ export default function App() {
               </div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* EXPERIENCE & EDUCATION */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 lg:gap-32">
           {/* Experience */}
-          <section id="experience" className="space-y-16 scroll-mt-32">
+          <motion.section id="experience" className="space-y-16 scroll-mt-32" {...sectionReveal}>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-1.5 h-1.5 bg-[var(--accent-violet)]" />
@@ -320,10 +326,10 @@ export default function App() {
                 </div>
               ))}
             </div>
-          </section>
+          </motion.section>
 
           {/* Education */}
-          <section id="education" className="space-y-16 scroll-mt-32">
+          <motion.section id="education" className="space-y-16 scroll-mt-32" {...sectionReveal}>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-1.5 h-1.5 bg-[var(--accent-violet)]" />
@@ -346,11 +352,11 @@ export default function App() {
                 </div>
               ))}
             </div>
-          </section>
+          </motion.section>
         </div>
 
         {/* CONTACT SECTION */}
-        <section id="contact" className="relative space-y-16 scroll-mt-32">
+        <motion.section id="contact" className="relative space-y-16 scroll-mt-32" {...sectionReveal}>
           <div className="h-px w-full bg-[var(--gradient-rule)] mb-32" />
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
@@ -429,12 +435,18 @@ export default function App() {
               </form>
             </div>
           </div>
-        </section>
+        </motion.section>
 
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-[var(--color-border)] py-20 text-center">
+      <motion.footer
+        className="border-t border-[var(--color-border)] py-20 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+      >
         <div className="max-w-[1100px] mx-auto px-6 space-y-8">
           <div className="font-display italic text-[var(--color-text-muted)] text-xl font-light">
             crafting precision <span className="not-italic text-[var(--color-text-secondary)] font-normal">&</span> elegance
@@ -443,7 +455,7 @@ export default function App() {
             &copy; {new Date().getFullYear()} Parthasarathy K
           </div>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   );
 }
